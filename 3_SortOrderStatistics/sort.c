@@ -1,8 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
-// 完成
 void mergeSort(int arr[], int left, int right)
 {
     int i, j, k, mid, tmp[100000];
@@ -42,7 +39,6 @@ void mergeSort(int arr[], int left, int right)
     }
 }
 
-// 完成
 int partision(int arr[], int start, int end)
 {
     int pivot = arr[end];
@@ -74,7 +70,6 @@ void quickSort(int arr[], int start, int end)
     }
 }
 
-// 完成
 int RandomPartision(int arr[], int start, int end)
 {
     int i = rand() % (end - start + 1) + start;
@@ -94,23 +89,41 @@ void RandomQuickSort(int arr[], int start, int end)
     }
 }
 
-// 完成
 void RadixSort(int arr[], int n)
 {
-    int i, j, k, m, p = 1, index;
-    int tmp[10000][10000];
-    for (i = 0; i < 10; i++)
+    int i, j, k, m, p = 1, index = 0;
+    int tmp[10][10000]; // 10桁のバケット、各バケットに最大10000個の要素を格納
+
+    // 配列の最大値を求める
+    for (i = 0; i < n; i++)
     {
-        for (j = 0; j < n; j++)
+        if (arr[i] > index)
         {
-            for (k = 0; k < 10000; k++)
-            {
-                tmp[i][k] = -1;
-            }
+            index = arr[i];
         }
     }
-    while (p <= 10000)
+
+    // 最大値の桁数を求める
+    int maxDigits = 0;
+    while (index > 0)
     {
+        maxDigits++;
+        index /= 10;
+    }
+
+    // 基数ソートのメインループ
+    for (int digit = 0; digit < maxDigits; digit++)
+    {
+        // バケットを初期化
+        for (i = 0; i < 10; i++)
+        {
+            for (j = 0; j < 10000; j++)
+            {
+                tmp[i][j] = -1;
+            }
+        }
+
+        // 各要素を対応するバケットに格納
         for (i = 0; i < n; i++)
         {
             index = (arr[i] / p) % 10;
@@ -123,6 +136,8 @@ void RadixSort(int arr[], int n)
                 }
             }
         }
+
+        // バケットから元の配列に要素を戻す
         m = 0;
         for (i = 0; i < 10; i++)
         {
@@ -135,7 +150,9 @@ void RadixSort(int arr[], int n)
                 }
             }
         }
-        p = p * 10;
+
+        // 次の桁に進む
+        p *= 10;
     }
 }
 
@@ -162,8 +179,8 @@ void insert(int arr[], int n)
 void MaxHeapify(int arr[], int len, int parent)
 {
     int left, right, largest, keep;
-    left = 2 * parent;
-    right = 2 * parent + 1;
+    left = 2 * parent + 1;
+    right = 2 * parent + 2;
 
     if (len > left && arr[left] > arr[parent])
     {
@@ -199,47 +216,23 @@ void BuildMaxHeap(int arr[], int len)
 
 void HeapSort(int arr[], int len)
 {
-    for (int i = 0; i < len; i++)
+    BuildMaxHeap(arr, len);
+    for (int i = len - 1; i >= 1; i--)
     {
-        BuildMaxHeap(arr, len - i);
         int keep = arr[0];
-        for (int j = 0; j < len - 1; j++)
-        {
-            arr[j] = arr[j + 1];
-        }
-        arr[len - 1] = keep;
+        arr[0] = arr[i];
+        arr[i] = keep;
+        len--;
+        MaxHeapify(arr, len, 0);
     }
 }
 
 void main()
 {
-    int n = 100000;
-    int *arr = (int *)malloc(n * sizeof(int));
-    if (arr == NULL)
+    int arr[] = {3, 1, 4, 9, 2, 6, 5, 7, 8, 10};
+    RadixSort(arr, 10);
+    for (int i = 0; i < 11; i++)
     {
-        printf("メモリの割り当てに失敗しました\n");
-        return;
+        printf("%d\n", arr[i]);
     }
-
-    srand(time(NULL));
-    for (int i = 0; i < n; i++)
-    {
-        arr[i] = rand() % 1000000; // 0から9999までのランダムな値で初期化
-    }
-    clock_t start, end;
-    double cpu_time_used;
-
-    start = clock();
-    HeapSort(arr, n);
-    end = clock();
-
-    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-
-    printf("Sorted array:\n");
-    // for (int i = 0; i < n; i++)
-    // {
-    //     printf("%d\n", arr[i]);
-    // }
-
-    printf("Time taken: %f seconds\n", cpu_time_used);
 }
