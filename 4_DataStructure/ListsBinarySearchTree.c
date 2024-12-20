@@ -1,23 +1,75 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-// Singly Linked List
-typedef struct Node
+typedef struct node
 {
     int data;
-    struct Node *next;
+    struct node *next;
 } Node;
 
-Node head = {0, NULL};
-
-void insert(int data)
+void printList(Node *head)
 {
-    Node newNode = {data, NULL};
-    for (Node p = head; p.next != NULL; p = *p.next)
+    while (head != NULL)
     {
-        if (p.next == NULL)
-        {
-            p.next = &newNode;
-            break;
-        }
+        printf("%d ", head->data);
+        head = head->next;
     }
+}
+
+void prepend(Node **head, int data)
+{
+    Node *newNode = (Node *)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = *head;
+    *head = newNode;
+}
+
+void deleteNode(Node **head, int key)
+{
+    Node *temp = *head, *prev;
+
+    if (temp != NULL && temp->data == key)
+    {
+        *head = temp->next;
+        free(temp);
+        return;
+    }
+
+    while (temp != NULL && temp->data != key)
+    {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL)
+        return;
+
+    prev->next = temp->next;
+    free(temp);
+}
+
+void search(Node *head, int key)
+{
+    Node *current = head;
+    while (current != NULL)
+    {
+        if (current->data == key)
+        {
+            printf("Found\n");
+            return;
+        }
+        current = current->next;
+    }
+    printf("Not Found\n");
+}
+
+void main()
+{
+    Node *head = NULL;
+
+    prepend(&head, 3);
+    prepend(&head, 2);
+    prepend(&head, 1);
+
+    printList(head);
 }
