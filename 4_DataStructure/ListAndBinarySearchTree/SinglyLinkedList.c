@@ -7,6 +7,7 @@ typedef struct node
     struct node *next;
 } Node;
 
+// Nodeを出力する
 void printList(Node *head)
 {
     while (head != NULL)
@@ -16,6 +17,7 @@ void printList(Node *head)
     }
 }
 
+// Nodeを末尾に追加する
 void prepend(Node **head, int data)
 {
     Node *newNode = (Node *)malloc(sizeof(Node));
@@ -28,6 +30,7 @@ void prepend(Node **head, int data)
     *head = newNode;
 }
 
+// Nodeを削除する
 void deleteNode(Node **head, int key)
 {
     Node *temp = *head, *prev;
@@ -52,6 +55,7 @@ void deleteNode(Node **head, int key)
     free(temp);
 }
 
+// Nodeを検索する
 void search(Node *head, int key)
 {
     Node *current = head;
@@ -67,19 +71,20 @@ void search(Node *head, int key)
     printf("Not Found\n");
 }
 
-// void main()
-// {
-//     Node *head = NULL;
+// Singly Linked Listの操作
+void main()
+{
+    Node *head = NULL;
 
-//     prepend(&head, 3);
-//     prepend(&head, 2);
-//     prepend(&head, 1);
+    prepend(&head, 3);
+    prepend(&head, 2);
+    prepend(&head, 1);
 
-//     deleteNode(&head, 2);
+    deleteNode(&head, 2);
 
-//     printList(head);
-//     search(head, 1);
-// }
+    printList(head);
+    search(head, 1);
+}
 
 int stackEmpty(Node *head)
 {
