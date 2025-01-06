@@ -20,6 +20,28 @@ int hashInsert(int arr[], int key)
     }
 }
 
+int hashSearch(int arr[], int key)
+{
+    int index = 0;
+
+    while (index < M)
+    {
+        int j = hash(key, index);
+        if (arr[j] == key)
+        {
+            return j;
+        }
+        else if (arr[j] == NULL)
+        {
+            return -1;
+        }
+        else
+        {
+            index++;
+        }
+    }
+}
+
 int main()
 {
 }
