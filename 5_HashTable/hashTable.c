@@ -2,6 +2,11 @@
 
 #define M 13
 
+int hash(int key, int index)
+{
+    return (key + index) % M;
+}
+
 int hashInsert(int arr[], int key)
 {
     int index = 0;
