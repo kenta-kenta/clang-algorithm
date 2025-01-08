@@ -2,91 +2,61 @@
 
 #define MAX 100
 
-typedef struct
+int hash(int password)
 {
-    char name;
-    char password;
-} Account;
-
-int hash(char name, int index)
-{
-    return (name + index) % MAX;
+    return password % MAX;
 }
 
-int registerAccount(Account arr[], char name, char password)
+int registerAccount(char arr[], char name, int password)
 {
-    int index = 0;
-    while (index < MAX)
+    int j = hash(password);
+    if (arr[j] == '\0') // NULLの代わりに'\0'を使用
     {
-        int j = hash(name, index);
-        if (arr[j].name == NULL)
-        {
-            arr[j].name = name;
-            arr[j].password = password;
-            return j;
-        }
-        else
-        {
-            index++;
-        }
+        arr[j] = name;
+        return j;
+    }
+    else
+    {
+        printf("パスワードを変更してください\n");
+        return -1;
     }
 }
 
-int login(Account arr[], char name, char password)
+int login(char arr[], char name, int password)
 {
-    int index = 0;
-    while (index < MAX)
+    int j = hash(password);
+    if (arr[j] == name)
     {
-        int j = hash(name, index);
-        if (arr[j].name == name && arr[j].password == password)
-        {
-            return j;
-        }
-        else if (arr[j].name == NULL)
-        {
-            return -1;
-        }
-        else
-        {
-            index++;
-        }
+        return j;
     }
-}
-
-int deleteAccount(Account arr[], char name)
-{
-    int index = 0;
-    while (index < MAX)
+    else if (arr[j] == '\0') // NULLの代わりに'\0'を使用
     {
-        int j = hash(name, index);
-        if (arr[j].name == name)
-        {
-            arr[j].name = NULL;
-            arr[j].password = NULL;
-            return j;
-        }
-        else if (arr[j].name == NULL)
-        {
-            return -1;
-        }
-        else
-        {
-            index++;
-        }
+        printf("アカウントが存在しません\n");
+        return -1;
+    }
+    else
+    {
+        printf("パスワードが違います\n");
+        return -1;
     }
 }
 
 int main()
 {
-    Account arr[MAX];
-    registerAccount(arr, 'a', '123');
-    registerAccount(arr, 'b', '456');
-    registerAccount(arr, 'c', '789');
-    printf("%d\n", login(arr, 'a', '123'));
-    printf("%d\n", login(arr, 'b', '456'));
-    printf("%d\n", login(arr, 'c', '789'));
-    printf("%d\n", login(arr, 'd', '123'));
-    printf("%d\n", deleteAccount(arr, 'a'));
-    printf("%d\n", login(arr, 'a', '123'));
+    char arr[MAX];
+    // 配列を初期化
+    for (int i = 0; i < MAX; i++)
+    {
+        arr[i] = '\0'; // NULL文字で初期化
+    }
+
+    registerAccount(arr, 'C', 9012);
+    registerAccount(arr, 'A', 1234);
+    registerAccount(arr, 'B', 5678);
+    printf("%d\n", hash(9012));
+    printf("%d\n", login(arr, 'C', 9012));
+    printf("%d\n", login(arr, 'A', 1234));
+    printf("%d\n", login(arr, 'B', 5678));
+    printf("%d\n", login(arr, 'D', 3456));
     return 0;
 }
