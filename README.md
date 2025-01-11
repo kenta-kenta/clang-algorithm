@@ -15,3 +15,7 @@
 ## 第 4 回レポート
 
 - 4_DataStructure
+
+## 第 5 回レポート
+
+- 5_HashTable
