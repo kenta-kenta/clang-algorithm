@@ -19,3 +19,7 @@
 ## 第 5 回レポート
 
 - 5_HashTable
+
+## 第 6 回レポート
+
+- 6_AdvancedTopics
